@@ -56,7 +56,7 @@ func main() {
 	seed := utils.GetEnv("MONKEY_SEED", "1234567890")
 
 	// Server options
-	serverHost := flag.String("host", "127.0.0.1", "Host to listen on")
+	serverHost := flag.String("host", "0.0.0.0", "Host to listen on")
 	serverPort := flag.Int("port", 8080, "Port to listen on")
 	testAccessoryDistribution := flag.Bool("test-ad", false, "Test accessory distribution")
 	randomFiles := flag.Int("rand-files", -1, "Generate this many random SVGs and output to randsvg folder")
@@ -79,12 +79,12 @@ func main() {
 	godotenv.Load()
 	// Setup database conn
 	config := &database.Config{
-		Host:     "127.0.0.1",
-		Port:     "54322",
-		User:     "postgres",
-		Password: "postgres",
-		SSLMode:  "disable",
-		DBName:   "monkey",
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		Password: os.Getenv("DB_PASS"),
+		User:     os.Getenv("DB_USER"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
+		DBName:   os.Getenv("DB_NAME"),
 	}
 	fmt.Println("🏡 Connecting to database...")
 	db, err := database.NewConnection(config)
